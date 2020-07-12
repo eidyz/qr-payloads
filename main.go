@@ -12,9 +12,10 @@ import (
 	qrcode "github.com/skip2/go-qrcode"
 )
 
-const OUTPUT_DIR = "qr-codes"
-const INPUT_DIR = "payloads"
+const OUTPUT_DIR = os.Getenv("QR_OUTPUT_DIR") || "qr-codes"
+const INPUT_DIR = os.Getenv("QR_INPUT_DIR") || "payloads"
 
+// CreateDirIfNotExist - creates directory if it doesnt exist
 func CreateDirIfNotExist(dir string) (e error) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = os.MkdirAll(dir, 0755)
@@ -26,6 +27,7 @@ func CreateDirIfNotExist(dir string) (e error) {
 	return
 }
 
+// ListDir - lists all files in directory
 func ListDir(dir string) (fileNames []string, e error) {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
@@ -39,6 +41,7 @@ func ListDir(dir string) (fileNames []string, e error) {
 	return
 }
 
+// ReadFile - Reads all lines in a file
 func ReadFile(path string) (fileTextLines []string, e error) {
 	readFile, err := os.Open(path)
 
